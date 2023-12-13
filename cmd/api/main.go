@@ -2,13 +2,14 @@ package main
 
 import (
 	"errors"
-	"log"
+	"os"
 
 	"go-test-api/cmd/api/handlers"
 	"go-test-api/cmd/api/routes"
 	"go-test-api/internal/config"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -20,14 +21,15 @@ func init() {
 
 func main() {
 	app := fiber.New(fiber.Config{
-		// Override default error handler
+		// Centralized error handler
 		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
+			log.Error(err.Error())
+
 			var e *fiber.Error
+			isFiberError := errors.As(err, &e) // Check if it's fiber.*Error
 
-			ok := errors.As(err, &e)
-
-			if !ok {
-				log.Println(err.Error())
+			if !isFiberError {
+				// If it's not fiber.*Error, we need to format it to fiber.*Error
 				e = fiber.NewError(fiber.StatusInternalServerError, "Internal Server Error")
 			}
 
@@ -53,11 +55,13 @@ func main() {
 
 	// 404 Not found Handler
 	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusNotFound).JSON(handlers.FailureResponse{
-			Status:  "error",
-			Message: "Not found",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "Not found")
 	})
 
-	app.Listen(":3000")
+	var port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port
+	}
+
+	app.Listen(":" + port)
 }
