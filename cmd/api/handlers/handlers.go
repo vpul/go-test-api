@@ -14,7 +14,7 @@ type SuccessResponse struct {
 	Payload interface{} `json:"payload"`
 }
 
-func InfoHandler(c *fiber.Ctx) error {
+func AppInfoHandler(c *fiber.Ctx) error {
 	type Info struct {
 		Name    string `json:"name"`
 		Version string `json:"version"`
@@ -28,5 +28,14 @@ func InfoHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(SuccessResponse{
 		Status:  "success",
 		Payload: info,
+	})
+}
+
+func UserInfoHandler(c *fiber.Ctx) error {
+	user := c.Locals("user")
+
+	return c.Status(fiber.StatusOK).JSON(SuccessResponse{
+		Status:  "success",
+		Payload: user,
 	})
 }
