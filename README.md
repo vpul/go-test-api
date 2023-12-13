@@ -53,7 +53,7 @@ Create a `.env` file in the root directory using the provided `.env.example` as 
 
 - URL: `{{baseurl}}/v1/my`
 - Request Type: GET
-- Headers: `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjI1MTYyMzkwMjJ9.EYWLJUkEpZJauIt8QPYHc2EKRK3eqtSVq2XYRzjVEn0`
+- Headers: `Authorization: Bearer {{JWT Token}}`
 
 **Response**
 
