@@ -8,15 +8,15 @@ BINARY_NAME := go-test-api
 all: build
 
 build:
-	$(GO) build -o $(BINARY_NAME) ./cmd/api
+	$(GO) build -o ./bin/$(BINARY_NAME) ./cmd/api
 
 run:
 	$(GO) run ./cmd/api
 
 start:
-	./$(BINARY_NAME)
+	./bin/$(BINARY_NAME)
 
 clean:
-	rm -f $(BINARY_NAME)
+	rm -f ./bin/$(BINARY_NAME)
 
 .PHONY: all build run clean
