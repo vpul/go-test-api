@@ -14,11 +14,6 @@ func init() {
 	config.LoadEnv()
 }
 
-type FailureResponse struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-}
-
 func main() {
 	app := fiber.New(fiber.Config{
 		// Override default error handler
@@ -48,6 +43,9 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("API running successfully!")
 	})
+
+	v1 := app.Group("/v1")
+	RegisterV1Routes(v1)
 
 	// 404 Not found Handler
 	app.Use(func(c *fiber.Ctx) error {
