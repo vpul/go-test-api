@@ -7,6 +7,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
@@ -38,6 +39,7 @@ func main() {
 	// Middlewares
 	app.Use(cors.New())
 	app.Use(recover.New()) // Recover from panics anywhere in the stack chain
+	app.Use(logger.New())
 
 	// Health check
 	app.Get("/", func(c *fiber.Ctx) error {
