@@ -46,14 +46,15 @@ func main() {
 		return c.SendString("API running successfully!")
 	})
 
+	// API v1 group
 	v1 := app.Group("/v1")
 	RegisterV1Routes(v1)
 
 	// 404 Not found Handler
 	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusNotFound).JSON(&fiber.Map{
-			"status":  "error",
-			"message": "Not found",
+		return c.Status(fiber.StatusNotFound).JSON(FailureResponse{
+			Status:  "error",
+			Message: "Not found",
 		})
 	})
 
