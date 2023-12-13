@@ -2,8 +2,11 @@ package main
 
 import (
 	"errors"
-	"go-test-api/internal/config"
 	"log"
+
+	"go-test-api/cmd/api/handlers"
+	"go-test-api/cmd/api/routes"
+	"go-test-api/internal/config"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -28,7 +31,7 @@ func main() {
 				e = fiber.NewError(fiber.StatusInternalServerError, "Internal Server Error")
 			}
 
-			ctx.Status(e.Code).JSON(FailureResponse{
+			ctx.Status(e.Code).JSON(handlers.FailureResponse{
 				Status:  "error",
 				Message: e.Message,
 			})
@@ -46,13 +49,11 @@ func main() {
 		return c.SendString("API running successfully!")
 	})
 
-	// API v1 group
-	v1 := app.Group("/v1")
-	RegisterV1Routes(v1)
+	routes.RegisterV1(app)
 
 	// 404 Not found Handler
 	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusNotFound).JSON(FailureResponse{
+		return c.Status(fiber.StatusNotFound).JSON(handlers.FailureResponse{
 			Status:  "error",
 			Message: "Not found",
 		})

@@ -1,8 +1,18 @@
-package main
+package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
 )
+
+type FailureResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
+type SuccessResponse struct {
+	Status  string      `json:"status"`
+	Payload interface{} `json:"payload"`
+}
 
 func InfoHandler(c *fiber.Ctx) error {
 	type Info struct {
